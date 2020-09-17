@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Wrapper, Container } from './App.styles'
 
@@ -11,7 +11,7 @@ import Calculator from '../Calculator'
 
 import extractPercentage from '../../utils/extractPercentage'
 
-import { selectAllProducts, selectSelectedProducts, selectSelectedProductsTotalPrice } from '../../store/Products/Products.selectors'
+import { selectSelectedProducts, selectSelectedProductsTotalPrice } from '../../store/Products/Products.selectors'
 import { toggleProduct } from '../../store/Products/Products.actions'
 
 function App() {
@@ -19,7 +19,6 @@ function App() {
     
     const colors = [ '#62cbc6', '#00abad', '#00858c', '#006073', '#004d61' ]
     
-    const products = useSelector(selectAllProducts)
     const selectedProducts = useSelector(selectSelectedProducts)
     const totalPrice = useSelector(selectSelectedProductsTotalPrice)
 
@@ -34,14 +33,13 @@ function App() {
                 left={
                     <ShoppingList 
                         title="produtos disponíveis"
-                        products={products}
                         onToggle={handleToggle}
                     />}
 
                 middle={
                     <ShoppingList 
                         title="sua lista de compras"
-                        products={selectedProducts}
+                        displayOnlySelected
                         onToggle={handleToggle}
                     />}
 
