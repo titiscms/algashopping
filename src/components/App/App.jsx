@@ -1,40 +1,30 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Wrapper, Container } from './App.styles'
+
+import LineChart from '../../shared/LineChart/LineChart'
+
 import AppHeader from '../AppHeader'
 import AppContainer from '../AppContainer'
-import LineChart from '../../shared/LineChart/LineChart'
 import ShoppingList from '../ShoppingList'
-import productsMock from '../../mocks/products.json'
-import extractPercentage from '../../utils/extractPercentage'
 import Calculator from '../Calculator'
 
+import extractPercentage from '../../utils/extractPercentage'
+
+import { selectAllProducts, selectSelectedProducts, selectSelectedProductsTotalPrice } from '../../store/Products/Products.selectors'
+import { toggleProduct } from '../../store/Products/Products.actions'
+
 function App() {
+    const dispatch = useDispatch()
+    
     const colors = [ '#62cbc6', '#00abad', '#00858c', '#006073', '#004d61' ]
     
-    const [products, setProducts] = useState(productsMock.products)
-    const [selectedProducts, setSelectedProducts] = useState([])
-    const [totalPrice, setTotalPrice] = useState(0)
-    
-    useEffect(() => {
-        const newSelectedProducts = products.filter(product => product.checked)
-
-        setSelectedProducts(newSelectedProducts)
-    }, [products])
-
-    useEffect(() => {
-        const total = selectedProducts
-                        .map(product => product.price)
-                        .reduce((a,b) => a + b, 0)
-
-        setTotalPrice(total)
-    }, [selectedProducts])
+    const products = useSelector(selectAllProducts)
+    const selectedProducts = useSelector(selectSelectedProducts)
+    const totalPrice = useSelector(selectSelectedProductsTotalPrice)
 
     function handleToggle (id) {
-        const newProducts = products.map(product => 
-            product.id === id ? { ...product, checked: !product.checked } : product
-        )
-
-        setProducts(newProducts)
+        dispatch(toggleProduct(id))
     }
 
     return <Wrapper>
