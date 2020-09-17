@@ -1,9 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Wrapper } from './AppHeader.styles'
 
-function AppHeader() {
+function AppHeader(state) {
+    const result = useSelector(state => state.calculator)
+
     return <Wrapper>
-        alga <span>Shopping</span>
+        alga <span>Shopping</span> <span>{ result }</span>
     </Wrapper>
 }
 
